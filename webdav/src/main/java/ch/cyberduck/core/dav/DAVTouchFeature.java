@@ -22,15 +22,20 @@ import ch.cyberduck.core.transfer.TransferStatus;
 
 public class DAVTouchFeature extends DefaultTouchFeature<Void> {
 
-    private final DAVSession session;
+    private final DAVAttributesFinderFeature attributes;
+
 
     public DAVTouchFeature(final DAVSession session) {
+        this(session, new DAVAttributesFinderFeature(session));
+    }
+
+    public DAVTouchFeature(final DAVSession session, final DAVAttributesFinderFeature attributes) {
         super(new DAVWriteFeature(session));
-        this.session = session;
+        this.attributes = attributes;
     }
 
     @Override
     public Path touch(final Path file, final TransferStatus status) throws BackgroundException {
-        return super.touch(file, status).withAttributes(new DAVAttributesFinderFeature(session).find(file));
+        return super.touch(file, status).withAttributes(attributes.find(file));
     }
 }
