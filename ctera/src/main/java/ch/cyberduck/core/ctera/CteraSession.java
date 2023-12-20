@@ -104,7 +104,7 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.github.sardine.DavResource;
 import com.google.common.util.concurrent.Uninterruptibles;
 
-import static ch.cyberduck.core.ctera.CteraCustomACL.*;
+import static ch.cyberduck.core.ctera.CteraAclPermissionFeature.*;
 
 
 public class CteraSession extends DAVSession {
@@ -227,7 +227,7 @@ public class CteraSession extends DAVSession {
                 public void preflight(final Path workdir, final String filename) throws BackgroundException {
                     // TODO CTERA-136 do we need to require writepermission as well?
                     super.preflight(workdir, filename);
-                    session.checkCteraRole(workdir, Createfilepermission);
+                    session.checkCteraRole(workdir, CREATEFILEPERMISSION);
                 }
             };
         }
@@ -237,7 +237,7 @@ public class CteraSession extends DAVSession {
                 public void preflight(final Path workdir, final String filename) throws BackgroundException {
                     // TODO CTERA-136 do we need to require writepermission as well?
                     super.preflight(workdir, filename);
-                    session.checkCteraRole(workdir, CreateDirectoriespermission);
+                    session.checkCteraRole(workdir, CREATEDIRECTORIESPERMISSION);
                 }
             };
         }
@@ -246,13 +246,13 @@ public class CteraSession extends DAVSession {
                 @Override
                 public void preflight(final Path source, final Path target) throws BackgroundException {
                     super.preflight(source, target);
-                    session.checkCteraRole(source, deletepermission);
-                    session.checkCteraRole(target, writepermission);
+                    session.checkCteraRole(source, DELETEPERMISSION);
+                    session.checkCteraRole(target, WRITEPERMISSION);
                     if(source.isDirectory()) {
-                        session.checkCteraRole(target.getParent(), CreateDirectoriespermission);
+                        session.checkCteraRole(target.getParent(), CREATEDIRECTORIESPERMISSION);
                     }
                     else {
-                        session.checkCteraRole(target.getParent(), Createfilepermission);
+                        session.checkCteraRole(target.getParent(), CREATEFILEPERMISSION);
                     }
                 }
             };
@@ -287,7 +287,7 @@ public class CteraSession extends DAVSession {
                 public void preflight(Path file) throws BackgroundException {
                     // TODO CTERA-136 do we need both? Which one to prefer?
                     super.preflight(file);
-                    session.checkCteraRole(file, readpermission);
+                    session.checkCteraRole(file, READPERMISSION);
                 }
             };
         }
@@ -297,7 +297,7 @@ public class CteraSession extends DAVSession {
                 public void preflight(Path file) throws BackgroundException {
                     // TODO CTERA-136 do we need both? Which one to prefer?
                     super.preflight(file);
-                    session.checkCteraRole(file, writepermission);
+                    session.checkCteraRole(file, WRITEPERMISSION);
                 }
             };
         }
@@ -307,7 +307,7 @@ public class CteraSession extends DAVSession {
                 public void preflight(Path file) throws BackgroundException {
                     // TODO CTERA-136 do we require writepermission on file as well?
                     super.preflight(file);
-                    session.checkCteraRole(file, deletepermission);
+                    session.checkCteraRole(file, DELETEPERMISSION);
                 }
             };
         }
@@ -318,10 +318,10 @@ public class CteraSession extends DAVSession {
                     // TODO CTERA-136 do we require writepermission on target's parent?
                     super.preflight(source, target);
                     if(source.isDirectory()) {
-                        session.checkCteraRole(target.getParent(), CreateDirectoriespermission);
+                        session.checkCteraRole(target.getParent(), CREATEDIRECTORIESPERMISSION);
                     }
                     else {
-                        session.checkCteraRole(target.getParent(), Createfilepermission);
+                        session.checkCteraRole(target.getParent(), CREATEFILEPERMISSION);
                     }
                 }
             };
